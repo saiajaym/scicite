@@ -116,3 +116,10 @@ If you found our dataset, or code useful, please cite [Structural Scaffolds for 
   year="2019"
 }
 ```
+
+
+## To run simple server
+
+```
+python -m allennlp.service.server_simple --archive-path scicite.tar.gz  --predictor predictor_scicite --include-package scicite --overrides "{'model':{'data_format':''}}" --title "Demo of the Machine Comprehension Text Fixture"     --field-name string --field-name citingPaperId  --field-name citedPaperId --field-name excerpt_index --field-name sectionName --field-name label
+```
