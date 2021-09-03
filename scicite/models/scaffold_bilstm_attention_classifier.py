@@ -23,7 +23,7 @@ from overrides import overrides
 from torch.nn import Parameter, Linear
 
 from scicite.constants import  Scicite_Format_Nested_Jsonlines
-
+import pdb 
 
 import torch.nn as nn
 
@@ -43,7 +43,7 @@ class ScaffoldBilstmAttentionClassifier(Model):
                  initializer: InitializerApplicator = InitializerApplicator(),
                  regularizer: Optional[RegularizerApplicator] = None,
                  report_auxiliary_metrics: bool = False,
-                 predict_mode: bool = False,
+                 predict_mode: bool = True,
                  ) -> None:
         """
         Additional Args:
@@ -120,10 +120,9 @@ class ScaffoldBilstmAttentionClassifier(Model):
         # pylint: disable=arguments-differ
         citation_text_embedding = self.text_field_embedder(citation_text)
         citation_text_mask = util.get_text_field_mask(citation_text)
-
         # shape: [batch, sent, output_dim]
         encoded_citation_text = self.citation_text_encoder(citation_text_embedding, citation_text_mask)
-
+        #print("********* Logits:", self.classifier_feedforward(encoded_citation_text))
         # shape: [batch, output_dim]
         attn_dist, encoded_citation_text = self.attention_seq2seq(encoded_citation_text, return_attn_distribution=True)
 
@@ -131,6 +130,7 @@ class ScaffoldBilstmAttentionClassifier(Model):
         # If in predict_mode, predict the citation intents
         if labels is not None:
             logits = self.classifier_feedforward(encoded_citation_text)
+            #print("******* Logits:", logits)
             class_probs = F.softmax(logits, dim=1)
 
             output_dict = {"logits": logits}
@@ -165,10 +165,11 @@ class ScaffoldBilstmAttentionClassifier(Model):
                     self.vocab.get_token_from_index(index=i, namespace="cite_worthiness_labels")]
                 metric(logits, is_citation)
 
-        if self.predict_mode:
-            logits = self.classifier_feedforward(encoded_citation_text)
-            class_probs = F.softmax(logits, dim=1)
-            output_dict = {"logits": logits}
+        #if self.predict_mode:
+        logits = self.classifier_feedforward(encoded_citation_text)
+        #print("********: Logits", logits)
+        class_probs = F.softmax(logits, dim=1)
+        output_dict = {"logits": logits}
 
         output_dict['citing_paper_id'] = citing_paper_id
         output_dict['cited_paper_id'] = cited_paper_id

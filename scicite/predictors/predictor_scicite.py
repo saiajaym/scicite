@@ -40,15 +40,16 @@ class PredictorSciCite(Predictor):
                 citation_excerpt_index=citation.citation_excerpt_index
             )
             outputs = self._model.forward_on_instance(instance)
-
+            print("**********************", outputs.get('probabilities'))
             return_dict['citingPaperId'] = outputs.get('citing_paper_id')
             return_dict['citedPaperId'] = outputs.get('cited_paper_id')
             return_dict['citation_id'] = citation.citation_id
-            return_dict['probabilities'] = outputs.get('probabilities')
+            #return_dict['probabilities'] = outputs.get('probabilities')
             return_dict['prediction'] = outputs['prediction']
             return_dict['original_label'] = citation.intent
             return_dict['citation_text'] = outputs.get('citation_text')
-            return_dict['attention_dist'] = outputs.get('attn_dist')
+            #return_dict['attention_dist'] = outputs.get('attn_dist')
+        print(return_dict)
         return return_dict
 
     @overrides

@@ -543,6 +543,7 @@ def read_s2_excerpt(ex):
     Returns:
         Citation object
     """
+    print(ex)
     citation = Citation(
         text=ex['string'],
         citing_paper_id=ex['citingPaperId'],

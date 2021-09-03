@@ -11,6 +11,7 @@ from allennlp.data.dataset_readers.dataset_reader import DatasetReader
 from allennlp.data.fields import LabelField, TextField, MultiLabelField, ListField, ArrayField, MetadataField
 from allennlp.data.instance import Instance
 from allennlp.data.tokenizers import Tokenizer, WordTokenizer
+#from allennlp.data.tokenizers import SpacyTokenizer as WordTokenizer
 from allennlp.data.token_indexers import TokenIndexer, SingleIdTokenIndexer, ELMoTokenCharactersIndexer
 
 from scicite.helper import regex_find_citation
